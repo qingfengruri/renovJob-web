@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
-import {Observable} from "rxjs/index";
-import {CookieService} from "ngx-cookie-service";
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {Observable} from 'rxjs/index';
+import {CookieService} from 'ngx-cookie-service';
 import * as c from 'crypto-js';
 
 
@@ -10,10 +10,10 @@ export class HttpCommonService {
 
   // 请求头
   private headers: HttpHeaders;
-  //本地
-  private baseUrl = 'xhsCreditApi/v1';  // URL to web api
+  // 本地
+  private baseUrl = '';  // URL to web api
   private timeCode = '&t=' + new Date().getTime();  // 时间戳
-  private d  = c.enc.Latin1.parse('x89j30k23k5s2lln');
+  private d = c.enc.Latin1.parse('x89j30k23k5s2lln');
 
   constructor(private http: HttpClient, public cookieService: CookieService) {
     // 请求头配置
@@ -27,7 +27,7 @@ export class HttpCommonService {
       .set('Pragma', 'no-cache');
   }
 
-  public getBaseUrl(): any{
+  public getBaseUrl(): any {
     return this.baseUrl;
   }
 
@@ -54,7 +54,7 @@ export class HttpCommonService {
   post(url: string, body, type?: string): any {
     this.setHeaders();
     body = JSON.stringify(body);
-    if ("1" == type) {
+    if ('1' === type) {
       body = this.a(body);
     }
     return this.http.post(this.getBaseUrl() + url, body, {headers: this.headers});
@@ -80,8 +80,8 @@ export class HttpCommonService {
    */
   delete(url: string, id: string) {
     this.setHeaders();
-    //如果后端用/:id方式传参则用此行代码
-    //return this.http.delete(url + "/" + id, {headers: this.headers});
+    // 如果后端用/:id方式传参则用此行代码
+    // return this.http.delete(url + "/" + id, {headers: this.headers});
     const idParam = new HttpParams().set('id', id);
     return this.http.delete(this.getBaseUrl() + url, {params: idParam, headers: this.headers});
   }
@@ -90,7 +90,7 @@ export class HttpCommonService {
    * 该方法用于导出数据的使用
    * @param params
    */
-  locationUrl(url, params?:any) {
+  locationUrl(url, params?: any) {
     /*this.setHeaders();
     let str = '';
     Object.keys(params).forEach(key => {
@@ -101,32 +101,34 @@ export class HttpCommonService {
     // this.setHeaders();
 
     params = JSON.stringify(params);
-    return this.http.post(this.getBaseUrl() + url,params, {headers: this.headers, responseType: 'arraybuffer'});
+    return this.http.post(this.getBaseUrl() + url, params, {headers: this.headers, responseType: 'arraybuffer'});
   }
 
   /**
    * 该方法用于导出数据的使用
-   * @param params
+   * @param? params
    */
   locationUrlGet(url, params?: any) {
-    //this.setHeaders();
+    // this.setHeaders();
     if (params) {
       params = this.encodeParams(params);
     }
-    return this.http.get(this.getBaseUrl() + url, {headers: this.headers, params: params,
-      responseType: 'arraybuffer'});
+    return this.http.get(this.getBaseUrl() + url, {
+      headers: this.headers, params: params,
+      responseType: 'arraybuffer'
+    });
   }
 
   /**
    * 该方法用于导出数据的使用
-   * @param params
+   * @param? params
    */
   locationUrlGet2(url, params?: any) {
     this.setHeaders();
     if (params) {
       params = this.encodeParams(params);
     }
-    window.open(this.getBaseUrl() + url + "?"+ params, "_self");
+    window.open(this.getBaseUrl() + url + '?' + params, '_self');
   }
 
   getImageUrl(path: string): any {
@@ -152,26 +154,26 @@ export class HttpCommonService {
    * 将cookie中的token设置在header请求头里，token每1小时变更一次，所以需要每次请求都去cookie中取一下
    */
   setHeaders() {
-    let userType = JSON.parse(localStorage.getItem("_user"))?JSON.parse(localStorage.getItem("_user"))["_userType"]:"";
-    this.headers = this.headers.set("User-Type", userType ? userType : 'tourist').
-    set("Set-Cookie", "auth-token="+this.cookieService.get("auth-token"));
+    const userType = JSON.parse(localStorage.getItem('_user')) ? JSON.parse(localStorage.getItem('_user'))['_userType'] : '';
+    this.headers = this.headers.set('User-Type', userType ? userType : 'tourist').set('Set-Cookie', 'auth-token=' +
+      this.cookieService.get('auth-token'));
   }
 
   a(e) {
-    let g = c.enc.Utf8.parse(e);
-    let f = c.AES.encrypt(g, this.d, {
-      mode : c.mode.ECB,
-      padding : c.pad.Pkcs7
+    const g = c.enc.Utf8.parse(e);
+    const f = c.AES.encrypt(g, this.d, {
+      mode: c.mode.ECB,
+      padding: c.pad.Pkcs7
     });
     return f.toString();
   }
 
   b(e) {
-    let g = c.AES.decrypt(e, this.d, {
-      mode : c.mode.ECB,
-      padding : c.pad.Pkcs7
+    const g = c.AES.decrypt(e, this.d, {
+      mode: c.mode.ECB,
+      padding: c.pad.Pkcs7
     });
-    let f = JSON.parse(c.enc.Utf8.stringify(g).toString());
+    const f = JSON.parse(c.enc.Utf8.stringify(g).toString());
     return f;
   }
 

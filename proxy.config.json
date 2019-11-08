@@ -1,11 +1,5 @@
 {
-  "/xhsCreditApi":{
-    "target":"http://172.25.0.233:8002"
-  },
-  "/zuul":{
-    "target":"http://172.25.0.233:8002"
-  },
-  "/xinhuashe":{
-    "target":"http://172.25.0.233:80"
+  "/":{
+    "target":"http://47.95.214.47:8088"
   }
 }

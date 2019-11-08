@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as $ from "jquery";
 import { HttpCommonService } from 'src/app/services/http-common.service';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-index',
@@ -12,8 +13,13 @@ export class IndexComponent implements OnInit {
   listOfTagOptions = [];
 
   constructor(
-    private http: HttpCommonService,
-  ) { }
+    private http: HttpCommonService
+  ) {
+    // 测试调用接口
+    // this.http.get('/getUserInfo').subscribe(data => {
+    //   console.log(data);
+    // });
+  }
 
   ngOnInit() {
     const children: Array<{ label: string; value: string }> = [];
